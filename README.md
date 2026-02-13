@@ -151,3 +151,10 @@ ruby "3.2.3"
 9. gem "active_storage_validations"
    役割：ユーザーがアップロードする背景画像などが「大きすぎないか」「画像形式（PNG/JPG）か」をチェックする。
    理由：巨大な画像がアップロードされるとCloudinaryの容量を圧迫したり、表示が遅くなるのを防ぐため。
+
+
+## 画面推移図(Figma)URL
+https://www.figma.com/design/16ThijvN2fkiSE5e0rxhz6/todo-roulette-%E7%94%BB%E9%9D%A2%E6%8E%A8%E7%A7%BB%E5%9B%B3%E3%80%80%E5%AE%8C%E6%88%90?node-id=0-1&t=EISN00abochioR3H-1
+
+修正後のURL
+https://www.figma.com/design/16ThijvN2fkiSE5e0rxhz6/todo-roulette-%E7%94%BB%E9%9D%A2%E6%8E%A8%E7%A7%BB%E5%9B%B3%E3%80%80%E5%AE%8C%E6%88%90?node-id=0-1&t=FCZ7ebY32GgfkzId-1
