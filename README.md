@@ -158,3 +158,6 @@ https://www.figma.com/design/16ThijvN2fkiSE5e0rxhz6/todo-roulette-%E7%94%BB%E9%9
 
 修正後のURL
 https://www.figma.com/design/16ThijvN2fkiSE5e0rxhz6/todo-roulette-%E7%94%BB%E9%9D%A2%E6%8E%A8%E7%A7%BB%E5%9B%B3%E3%80%80%E5%AE%8C%E6%88%90?node-id=0-1&t=FCZ7ebY32GgfkzId-1
+
+## ER図のURL
+https://gyazo.com/b9a31315620767f8b07c5384d2040b12
