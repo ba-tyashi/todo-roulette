@@ -39,7 +39,7 @@ RUN bundle install && \
 # 4. Nodeモジュールのインストール（npmを使用）
 COPY package.json ./
 RUN npm install
-RUN npm install -g @tailwindcss/cli
+RUN npm install -g esbuild @tailwindcss/cli
 
 # 5. アプリコードのコピーとビルド
 COPY . .
