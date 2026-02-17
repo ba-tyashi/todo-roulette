@@ -60,4 +60,10 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 EXPOSE 3000
 RUN ./bin/rails db:migrate
-CMD ["./bin/rails", "server"]
+COPY --chmod=755 <<EOF /rails/bin/docker-entrypoint
+#!/bin/bash
+./bin/rails db:migrate
+exec ./bin/rails server
+EOF
+
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
