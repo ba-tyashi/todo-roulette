@@ -1,0 +1,31 @@
+# Ruby のベースイメージを指定 (Rails 7.1/7.2系に最適な 3.2系や最新の 3.3系が一般的ですが、3.4.1もOKです)
+FROM ruby:3.4.1
+
+# 環境変数の設定
+ENV LANG C.UTF-8
+ENV TZ Asia/Tokyo
+
+# 必要なパッケージのインストール (Node.js 20系)
+RUN apt-get update -qq \
+&& apt-get install -y ca-certificates curl gnupg build-essential libpq-dev vim \
+&& mkdir -p /etc/apt/keyrings \
+&& curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+&& NODE_MAJOR=20 \
+&& echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+
+# Bun のインストール (本アプリで -j bun を使用するため必須)
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+
+# 最新のパッケージリストで nodejs をインストール
+RUN apt-get update -qq && apt-get install -y nodejs
+
+# アプリケーションディレクトリの作成 (名称をアプリ名に合わせると分かりやすいです)
+RUN mkdir /todo-roulette
+WORKDIR /todo-roulette
+
+# Bundlerのインストール
+RUN gem install bundler
+
+# ホストのファイルをコンテナにコピー
+COPY . /todo-roulette

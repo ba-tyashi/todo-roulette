@@ -1,0 +1,24 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # 接続先をコンテナ名の "db" に指定
+  host: db
+  # Docker Compose で設定したユーザー名とパスワード
+  username: postgres
+  password: password
+  # コネクションプールの設定
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: todo_roulette_development
+
+test:
+  <<: *default
+  database: todo_roulette_test
+
+production:
+  <<: *default
+  database: todo_roulette_production
+  username: todo_roulette
+  password: <%= ENV["TODO_ROULETTE_DATABASE_PASSWORD"] %>

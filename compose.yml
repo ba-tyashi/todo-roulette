@@ -1,0 +1,52 @@
+services:
+  db:
+    # バージョンを明示すると安定
+    image: postgres:16
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+      POSTGRES_PASSWORD: password
+    volumes:
+      # パスを正確に修正
+      - postgresql_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      # データベース名は rails new 後に作成される名前に合わせる必要がある
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # Bunを使用するため ./bin/dev が正常に動くよう設定
+    command: bash -c "rm -f tmp/pids/server.pid && bundle install && ./bin/dev"
+    tty: true
+    stdin_open: true
+    volumes:
+      # Dockerfileで作成したディレクトリ名に合わせる
+      - .:/todo-roulette
+      - bundle_data:/usr/local/bundle:cached
+      # パスを修正
+      - node_modules:/todo-roulette/node_modules
+      # Bunのキャッシュ用に追加
+      - bun_install:/root/.bun
+    environment:
+      TZ: Asia/Tokyo
+      DATABASE_HOST: db
+      DATABASE_PASSWORD: password
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  bundle_data:
+  postgresql_data:
+  node_modules:
+  # 追加
+  bun_install:
