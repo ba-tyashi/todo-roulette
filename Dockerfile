@@ -59,4 +59,5 @@ USER 1000:1000
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 EXPOSE 3000
+RUN ./bin/rails db:migrate
 CMD ["./bin/rails", "server"]
