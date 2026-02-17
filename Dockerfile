@@ -54,16 +54,14 @@ COPY --from=build /rails /rails
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
-USER 1000:1000
-
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 EXPOSE 3000
-RUN ./bin/rails db:migrate
+USER root
 COPY --chmod=755 <<EOF /rails/bin/docker-entrypoint
 #!/bin/bash
-./bin/rails db:migrate
-exec ./bin/rails server
+bundle exec rails db:migrate
+exec bundle exec rails server
 EOF
 
+USER 1000:1000
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
