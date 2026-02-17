@@ -102,4 +102,11 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # Render.com 用の設定
+  # 1. Render のドメインからのアクセスを許可する
+  config.hosts << ".onrender.com"
+  config.hosts << ENV["RENDER_EXTERNAL_HOSTNAME"] if ENV["RENDER_EXTERNAL_HOSTNAME"]
+
+  # 2. Docker コンテナ内で Rails が静的ファイル（CSS/JS等）を配信できるようにする
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present? || true
 end

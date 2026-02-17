@@ -19,6 +19,11 @@ test:
 
 production:
   <<: *default
-  database: todo_roulette_production
-  username: todo_roulette
-  password: <%= ENV["TODO_ROULETTE_DATABASE_PASSWORD"] %>
+  # Renderが提供するデータベースURLを使用するように設定
+  url: <%= ENV["DATABASE_URL"] %>
+  # Dockerデプロイの場合、以下の設定が必要になることがあります
+  sslmode: require
+  #database: todo_roulette_production
+  #username: todo_roulette
+  #password: <%= ENV["TODO_ROULETTE_DATABASE_PASSWORD"] %>
+
