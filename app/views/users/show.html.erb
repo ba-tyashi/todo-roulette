@@ -1,0 +1,35 @@
+<div style="max-width: 600px; margin: 0 auto; font-family: sans-serif;">
+  <h1>マイページ</h1>
+
+  <div style="background-color: #f0f8ff; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #b0d4ff;">
+    <h2 style="margin-top: 0;">こんにちは、<%= @user.name %> さん！</h2>
+    <p style="color: #555;">現在ログイン中です。あなたの相棒を確認しましょう。</p>
+  </div>
+
+  <h3>所持しているキャラクター</h3>
+  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    <% if @character_instances.any? %>
+      <% @character_instances.each do |instance| %>
+        <div style="border: 2px solid #ddd; padding: 20px; border-radius: 12px; text-align: center; width: 220px; background-color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+          <div style="font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #333;">
+            <%= instance.character.name %>
+          </div>
+          
+          <div style="width: 120px; height: 120px; background-color: #fff9e6; line-height: 120px; margin: 0 auto; border-radius: 50%; font-size: 60px; border: 2px dashed #ffd700;">
+            🥚
+          </div>
+          
+          <p style="font-size: 0.9em; color: #666; margin-top: 15px; line-height: 1.4;">
+            <%= instance.character.description %>
+          </p>
+        </div>
+      <% end %>
+    <% else %>
+      <p>まだキャラクターを持っていません。</p>
+    <% end %>
+  </div>
+
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+    <%= link_to "🏠 TODO一覧（ルーレット）へ", todos_path, style: "text-decoration: none; color: #007bff; font-weight: bold;" %>
+  </div>
+</div>

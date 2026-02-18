@@ -22,6 +22,7 @@
       <nav>
         <% if user_signed_in? %>
           <strong>こんにちは、<%= current_user.name %> さん</strong> |
+          <%= link_to "マイページ", user_mypage_path, style: "font-weight: bold; color: #28a745;" %> |
           <%= link_to "TODO一覧", todos_path %> |
           <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, style: "color: red;" %>
         <% else %>
