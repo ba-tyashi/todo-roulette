@@ -18,6 +18,21 @@
   </head>
 
   <body>
+    <header style="background-color: #f8f9fa; padding: 10px; margin-bottom: 20px; border-bottom: 1px solid #dee2e6;">
+      <nav>
+        <% if user_signed_in? %>
+          <strong>こんにちは、<%= current_user.name %> さん</strong> |
+          <%= link_to "TODO一覧", todos_path %> |
+          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, style: "color: red;" %>
+        <% else %>
+          <%= link_to "新規登録", new_user_registration_path %> |
+          <%= link_to "ログイン", new_user_session_path %>
+        <% end %>
+      </nav>
+    </header>
+    <p class="notice" style="color: green;"><%= notice %></p>
+    <p class="alert" style="color: red;"><%= alert %></p>
+
     <%= yield %>
   </body>
 </html>
