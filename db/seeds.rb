@@ -7,3 +7,11 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+Character.find_or_create_by!(id: 1) do |c|
+  c.name = "はじまりの卵"
+  c.description = "ここからすべてが始まる、不思議な卵。"
+  # 後ほど画像を追加する際のファイル名
+  c.image_url = "egg_01.png"
+end
+
+puts "初期キャラクターの作成が完了しました！"
