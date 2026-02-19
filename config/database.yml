@@ -9,12 +9,12 @@ development:
   <<: *default
   database: todo_roulette_development
   # WSLからDockerのDBに繋ぐために localhost を指定
-  host: localhost
+  host: db
 
 test:
   <<: *default
   database: todo_roulette_test
-  host: localhost
+  host: db
 
 production:
   <<: *default

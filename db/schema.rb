@@ -10,9 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_18_075245) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_19_110931) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "character_instances", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -28,6 +34,18 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_18_075245) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "category_id", null: false
+    t.string "title", null: false
+    t.integer "priority", default: 1, null: false
+    t.boolean "completed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_tasks_on_category_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "todos", force: :cascade do |t|
@@ -58,5 +76,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_18_075245) do
   end
 
   add_foreign_key "character_instances", "users"
+  add_foreign_key "tasks", "categories"
+  add_foreign_key "tasks", "users"
   add_foreign_key "todos", "users"
 end

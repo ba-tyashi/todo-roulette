@@ -14,4 +14,8 @@ Character.find_or_create_by!(id: 1) do |c|
   c.image_url = "egg_01.png"
 end
 
+['勉強', '運動', '家事', '仕事', '趣味'].each do |name|
+  Category.find_or_create_by!(name: name)
+end
+
 puts "初期キャラクターの作成が完了しました！"
