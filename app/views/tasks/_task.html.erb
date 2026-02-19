@@ -1,0 +1,34 @@
+<%= turbo_frame_tag dom_id(task) do %>
+  <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition <%= 'opacity-60' if task.completed %>">
+    <div class="flex items-center space-x-4">
+      <%# 完了チェックボックス: 変更時に即送信(requestSubmit) %>
+      <%= form_with(model: task, class: "flex items-center") do |f| %>
+        <%= f.check_box :completed, 
+            onchange: "this.form.requestSubmit();", 
+            class: "w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer border-gray-300" %>
+      <% end %>
+
+      <span class="text-lg font-bold text-yellow-500 min-w-[60px]">
+        <%= case task.priority when 'high' then '★★★' when 'medium' then '★★' else '★' end %>
+      </span>
+      
+      <div class="<%= 'line-through text-gray-400' if task.completed %>">
+        <div class="font-medium text-gray-900"><%= task.title %></div>
+        <div class="text-xs">
+          <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+            <%= task.category.name %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-4">
+      <%# Turbo Frameにより、ここが編集フォームに切り替わる %>
+      <%= link_to "編集", edit_task_path(task), class: "text-blue-500 hover:text-blue-700 text-sm font-medium" %>
+      
+      <%= button_to "削除", task_path(task), method: :delete, 
+          data: { turbo_confirm: "本当に削除しますか？" },
+          class: "text-red-400 hover:text-red-600 text-sm font-medium" %>
+    </div>
+  </div>
+<% end %>

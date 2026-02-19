@@ -4,11 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :name, presence: true
-  has_many :todos, dependent: :destroy
   has_many :character_instances, dependent: :destroy
 
   # ユーザー登録が完了した直後に give_first_character メソッドを実行する
   after_create :give_first_character
+  has_many :tasks, dependent: :destroy
 
   private
 

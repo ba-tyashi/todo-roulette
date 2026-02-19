@@ -1,0 +1,26 @@
+<div class="max-w-4xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-8 text-gray-800">ルーレット用タスク管理</h1>
+
+  <%# ID "new_task_form" を付与して、Turboから中身を空にできるようにする %>
+  <div id="new_task_form" class="bg-white shadow-md rounded-lg p-6 mb-10 border border-gray-100">
+    <h2 class="text-lg font-semibold mb-4 text-gray-700">新しいタスクを追加</h2>
+    <%= render "form", task: @task %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
+      <h2 class="font-semibold text-gray-600">あなたのタスク</h2>
+    </div>
+    
+    <%# リスト本体に id="tasks" を持たせる %>
+    <div id="tasks" class="divide-y divide-gray-100">
+      <%= render @tasks %>
+    </div>
+    
+    <div id="no_tasks_message">
+      <% if @tasks.none? %>
+        <p class="p-10 text-center text-gray-400">タスクがありません。上のフォームから追加しましょう！</p>
+      <% end %>
+    </div>
+  </div>
+</div>
