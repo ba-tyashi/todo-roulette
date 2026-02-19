@@ -1,0 +1,26 @@
+<%# 1. 編集フォーム（dom_id(@task)）を最新のタスク表示（_task.html.erb）に差し替える %>
+<%= turbo_stream.replace dom_id(@task), partial: "tasks/task", locals: { task: @task } %>
+
+<%# 2. もし完了（checked）になったら宝箱モーダルを出す演出 %>
+<% if @task.completed? %>
+  <%= turbo_stream.update "treasure_modal" do %>
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+      <div class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-4 relative overflow-hidden">
+        <div class="text-6xl mb-4 animate-bounce">🎁</div>
+        <h2 class="text-2xl font-bold text-yellow-600 mb-2">お疲れ様でした！</h2>
+        <p class="text-gray-600 mb-6">宝箱からご褒美が出現しました！</p>
+        
+        <div class="bg-yellow-50 border-2 border-yellow-200 p-4 rounded-xl mb-6">
+          <p class="text-sm text-yellow-700 font-semibold mb-1">今回のプレゼント</p>
+          <p class="text-xl font-bold text-gray-800">
+            <%= @reward&.name || "自分を褒めてあげよう！" %>
+          </p>
+        </div>
+
+        <button onclick="document.getElementById('treasure_modal').innerHTML=''" class="bg-gray-800 text-white px-6 py-2 rounded-full font-bold hover:bg-gray-700 transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  <% end %>
+<% end %>

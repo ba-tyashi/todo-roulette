@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   validates :name, presence: true
   has_many :character_instances, dependent: :destroy
+  has_many :rewards, dependent: :destroy
 
   # ユーザー登録が完了した直後に give_first_character メソッドを実行する
   after_create :give_first_character

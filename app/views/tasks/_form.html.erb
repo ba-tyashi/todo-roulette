@@ -16,7 +16,10 @@
     </div>
   </div>
 
-  <div class="flex justify-end pt-2">
-    <%= f.submit "タスクを追加", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md transition duration-200 cursor-pointer" %>
+  <div class="flex justify-end items-center pt-2 space-x-4">
+    <% unless task.new_record? %>
+      <%= link_to "キャンセル", task_path(task), class: "text-sm text-gray-500 hover:text-gray-700" %>
+    <% end %>
+    <%= f.submit task.new_record? ? "タスクを追加" : "更新する", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md transition duration-200 cursor-pointer" %>
   </div>
 <% end %>

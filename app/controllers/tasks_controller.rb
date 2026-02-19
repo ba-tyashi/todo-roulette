@@ -38,8 +38,10 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        # helpers. を付けることで、コントローラー内でも dom_id が使えるようになります
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(helpers.dom_id(@task), partial: "tasks/task", locals: { task: @task }) }
+        # タスクが完了になった時だけ、ご褒美を抽選する
+        @reward = Reward.pick_for(current_user) if @task.completed?
+
+        format.turbo_stream
         format.html { redirect_to tasks_path, notice: "更新しました" }
       else
         format.html { render :index, status: :unprocessable_entity }

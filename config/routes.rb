@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
+  get "rewards/index"
   resources :tasks
+  resources :rewards, only: [:index, :create, :destroy]
   devise_for :users
   root "tasks#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

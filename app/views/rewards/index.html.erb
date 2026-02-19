@@ -1,0 +1,37 @@
+<div class="max-w-4xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-8 text-gray-800">ご褒美メニュー管理</h1>
+
+  <%# 登録フォーム %>
+  <div class="bg-white shadow-md rounded-lg p-6 mb-10 border border-yellow-100">
+    <h2 class="text-lg font-semibold mb-4 text-gray-700">新しいご褒美を追加</h2>
+    <%= form_with(model: @reward, local: true, class: "space-y-4") do |f| %>
+      <div>
+        <%= f.label :name, "ご褒美名", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_field :name, placeholder: "例：ハーゲンダッツを食べる", class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border" %>
+      </div>
+      <div>
+        <%= f.label :description, "詳細（任意）", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_area :description, placeholder: "自分への特別なご褒美内容を書きましょう", rows: 2, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border" %>
+      </div>
+      <%= f.submit "ご褒美を追加", class: "w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition cursor-pointer" %>
+    <% end %>
+  </div>
+
+  <%# 一覧表示 %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <% @rewards.each do |reward| %>
+      <div class="bg-white p-4 rounded-lg shadow border border-gray-100 flex justify-between items-start">
+        <div>
+          <h3 class="font-bold text-gray-800">🎁 <%= reward.name %></h3>
+          <p class="text-sm text-gray-500 mt-1"><%= reward.description %></p>
+        </div>
+        <%= button_to "削除", reward_path(reward), method: :delete, data: { turbo_confirm: "削除しますか？" }, class: "text-red-400 hover:text-red-600 text-xs" %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @rewards.none? %>
+    <p class="text-center text-gray-400 mt-10">まだご褒美が登録されていません。ワクワクするものを追加しましょう！</p>
+  <% end %>
+</div>
+

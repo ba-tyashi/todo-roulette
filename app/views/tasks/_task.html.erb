@@ -1,18 +1,22 @@
 <%= turbo_frame_tag dom_id(task) do %>
-  <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition <%= 'opacity-60' if task.completed %>">
+  <%# 完了時は少し薄くするが、編集中(action_name == 'edit')はハッキリ表示させる %>
+  <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition <%= 'opacity-50' if task.completed && action_name != 'edit' %>">
     <div class="flex items-center space-x-4">
-      <%# 完了チェックボックス: 変更時に即送信(requestSubmit) %>
+      
+      <%# 完了・未完了を切り替えるボタン %>
       <%= form_with(model: task, class: "flex items-center") do |f| %>
-        <%= f.check_box :completed, 
-            onchange: "this.form.requestSubmit();", 
-            class: "w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer border-gray-300" %>
+        <%= f.hidden_field :completed, value: !task.completed %>
+        <%= f.submit task.completed ? "戻す" : "完了", 
+            class: "px-3 py-1 text-xs font-bold rounded-full border cursor-pointer transition #{task.completed ? 'bg-gray-100 text-gray-500' : 'bg-green-50 text-green-600 border-green-200 hover:bg-green-100'}" %>
       <% end %>
 
+      <%# 優先度の星表示 %>
       <span class="text-lg font-bold text-yellow-500 min-w-[60px]">
         <%= case task.priority when 'high' then '★★★' when 'medium' then '★★' else '★' end %>
       </span>
       
-      <div class="<%= 'line-through text-gray-400' if task.completed %>">
+      <%# タスク名（取り消し線 line-through を削除しました） %>
+      <div>
         <div class="font-medium text-gray-900"><%= task.title %></div>
         <div class="text-xs">
           <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
@@ -23,9 +27,10 @@
     </div>
 
     <div class="flex items-center space-x-4">
-      <%# Turbo Frameにより、ここが編集フォームに切り替わる %>
+      <%# 編集ボタン %>
       <%= link_to "編集", edit_task_path(task), class: "text-blue-500 hover:text-blue-700 text-sm font-medium" %>
       
+      <%# 削除ボタン %>
       <%= button_to "削除", task_path(task), method: :delete, 
           data: { turbo_confirm: "本当に削除しますか？" },
           class: "text-red-400 hover:text-red-600 text-sm font-medium" %>
