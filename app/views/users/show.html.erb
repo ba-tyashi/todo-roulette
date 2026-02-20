@@ -4,7 +4,6 @@
   <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 2px solid #f0f4f8; padding-bottom: 10px;">
     <h1 style="margin: 0; font-size: 1.5rem; color: #333;">マイページ</h1>
     
-    <%# 修正ポイント：link_to をカッコ () で囲みました %>
     <%= link_to(rewards_path, 
           style: "display: flex; align-items: center; gap: 5px; background-color: #fff9e6; color: #d97706; padding: 8px 16px; border: 1px solid #fde68a; text-decoration: none; font-size: 0.9rem; font-weight: bold; border-radius: 8px; transition: 0.2s;", 
           onmouseover: "this.style.backgroundColor='#fef3c7'", 
@@ -47,12 +46,36 @@
   </div>
 
   <div style="margin-top: 50px; text-align: center;">
-    <%# 修正ポイント：こちらもカッコ () で囲んで安全にしています %>
     <%= link_to(tasks_path, 
           style: "display: inline-block; text-decoration: none; color: #2563eb; font-weight: bold; padding: 10px 20px; border-radius: 30px; border: 2px solid #dbeafe; transition: 0.2s;", 
           onmouseover: "this.style.backgroundColor='#eff6ff'", 
           onmouseout: "this.style.backgroundColor='transparent'") do %>
       🏠 TODO一覧に戻る
     <% end %>
+  </div>
+
+  <%# --- ここから追加：アカウント削除セクション --- %>
+  <div style="margin-top: 80px; padding: 25px; border-radius: 15px; border: 1px solid #fee2e2; background-color: #fffafb;">
+    <h3 style="margin-top: 0; color: #b91c1c; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+      ⚠️ 危険な操作
+    </h3>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+      <div style="flex: 1; min-width: 250px;">
+        <p style="margin: 0; font-size: 0.95rem; color: #7f1d1d; font-weight: bold;">アカウントの削除</p>
+        <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: #991b1b;">
+          一度削除すると、作成したタスクや所持しているキャラクターはすべて消去され、復元できません。
+        </p>
+      </div>
+
+      <%= button_to(registration_path(current_user), 
+                    method: :delete, 
+                    data: { turbo_confirm: "本当にアカウントを削除しますか？\nこの操作は取り消せません。" },
+                    style: "background-color: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: 0.2s;",
+                    onmouseover: "this.style.backgroundColor='#dc2626'",
+                    onmouseout: "this.style.backgroundColor='#ef4444'") do %>
+        アカウントを削除する
+      <% end %>
+    </div>
   </div>
 </div>

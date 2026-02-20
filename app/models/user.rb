@@ -3,19 +3,25 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  validates :name, presence: true
-  has_many :character_instances, dependent: :destroy
-  has_many :rewards, dependent: :destroy
 
-  # ユーザー登録が完了した直後に give_first_character メソッドを実行する
-  after_create :give_first_character
+  # バリデーション
+  validates :name, presence: true
+
+  # 関連付け（ユーザー削除時にこれらも自動削除されます）
   has_many :tasks, dependent: :destroy
+  has_many :rewards, dependent: :destroy
+  has_many :character_instances, dependent: :destroy
+
+  # コールバック：ユーザー登録完了直後に初期キャラを配布
+  after_create :give_first_character
 
   private
 
   def give_first_character
     # キャラクターID「1」を初期配布
-    # create! を使うことで、失敗した時にエラーを出して気づけるようにします
+    # データベースに ID:1 のキャラが存在することを確認してください
     self.character_instances.create!(character_id: 1)
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error "初期キャラクターの配布に失敗しました: #{e.message}"
   end
 end

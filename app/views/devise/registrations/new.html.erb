@@ -1,34 +1,39 @@
-<h2>Sign up</h2>
+<div style="max-width: 400px; margin: 60px auto; padding: 30px; border-radius: 12px; background-color: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.1); font-family: 'Helvetica Neue', Arial, sans-serif;">
+  
+  <h2 style="text-align: center; color: #333; margin-bottom: 25px; font-size: 24px; font-weight: bold;">新規アカウント登録</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true %>
+    <div style="margin-bottom: 20px;">
+      <%= f.label :name, "お名前", style: "display: block; margin-bottom: 8px; color: #555; font-size: 14px; font-weight: 600;" %>
+      <%= f.text_field :name, autofocus: true, placeholder: "田中 太郎", style: "width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :email, "メールアドレス", style: "display: block; margin-bottom: 8px; color: #555; font-size: 14px; font-weight: 600;" %>
+      <%= f.email_field :email, autocomplete: "email", placeholder: "example@mail.com", style: "width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :password, "パスワード", style: "display: block; margin-bottom: 8px; color: #555; font-size: 14px; font-weight: 600;" %>
+      <% if @minimum_password_length %>
+        <span style="font-size: 12px; color: #999; font-weight: normal;">(<%= @minimum_password_length %> 文字以上)</span>
+      <% end %>
+      <%= f.password_field :password, autocomplete: "new-password", placeholder: "••••••••", style: "width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px;" %>
+    </div>
+
+    <div style="margin-bottom: 25px;">
+      <%= f.label :password_confirmation, "パスワード（確認用）", style: "display: block; margin-bottom: 8px; color: #555; font-size: 14px; font-weight: 600;" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "••••••••", style: "width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.submit "アカウントを作成する", style: "width: 100%; padding: 14px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.2s;" %>
+    </div>
+  <% end %>
+
+  <div style="border-top: 1px solid #eee; padding-top: 20px; text-align: center; font-size: 14px;">
+    <%= render "devise/shared/links" %>
   </div>
-
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
-    <% end %>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

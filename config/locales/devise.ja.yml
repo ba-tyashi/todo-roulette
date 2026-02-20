@@ -1,0 +1,41 @@
+ja:
+  # Devise専用のメッセージ
+  devise:
+    failure:
+      unauthenticated: "この操作には、ログインまたは新規登録が必要です。"
+      invalid: "メールアドレスまたはパスワードが違います。"
+      last_attempt: "パスワードを間違えています。あと1回でアカウントがロックされます。"
+      not_found_in_database: "メールアドレスまたはパスワードが違います。"
+      timeout: "セッションがタイムアウトしました。もう一度ログインしてください。"
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_in: "すでにログインしています。"
+    registrations:
+      signed_up: "アカウント登録が完了しました。ようこそ！"
+      updated: "アカウント情報を更新しました。"
+      destroyed: "アカウントを削除しました。またのご利用をお待ちしております。"
+
+  # Rails共通のエラーメッセージ（ここが devise: の外に出るのが正解です）
+  errors:
+    messages:
+      not_saved:
+        one: "1件のエラーにより、%{resource} を保存できませんでした。"
+        other: "%{count}件のエラーにより、%{resource} を保存できませんでした。"
+
+  # モデル（User）ごとの細かい日本語訳
+  activerecord:
+    models:
+      user: "ユーザー"
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: "はすでに登録されています"
+              blank: "を入力してください"
+            password:
+              blank: "を入力してください"
+              too_short: "は%{count}文字以上に設定してください"
+            name:
+              blank: "を入力してください"
