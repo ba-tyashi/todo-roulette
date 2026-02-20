@@ -1,24 +1,43 @@
 class RoulettesController < ApplicationController
   def show
-    @tasks = current_user.tasks.where(completed: false).map do |task|
+    # モデルで定義した incomplete スコープを活用
+    @tasks = current_user.tasks.incomplete.map do |task|
       {
         id: task.id,
         title: task.title,
         color: view_context.string_to_color(task.title),
-        # 優先度を重みとして渡す（カラムがない場合はデフォルト1）
-        weight: task.priority || 1 
+        # モデルの weight メソッドを使用して重みを取得
+        weight: task.weight
       }
     end
   end
 
   def spin
-    # サーバー側でも重み付け抽選を行う
-    # weighted_sample は別途モデル等で定義が必要
-    @task = current_user.tasks.where(completed: false).sample 
+    tasks = current_user.tasks.incomplete
     
-    # 停止位置の計算（360度 * 5回転 + ランダム角度）
-    stop_degree = 1800 + rand(360)
+    if tasks.empty?
+      render json: { error: "タスクがありません" }, status: :unprocessable_entity
+      return
+    end
+
+    # --- 厳正な重み付け抽選ロジック ---
+    total_weight = tasks.sum(&:weight)
+    random_point = rand(total_weight) # 0 〜 合計重みの間で乱数を生成
     
-    render json: { task: @task, stop_degree: stop_degree }
+    winning_task = nil
+    accumulator = 0
+    
+    tasks.each do |task|
+      accumulator += task.weight
+      if random_point < accumulator
+        winning_task = task
+        break
+      end
+    end
+    # ------------------------------
+
+    # JS側で5回転（1800度）させる演出は、JS側で制御したほうが柔軟なため
+    # ここでは当選したタスクの情報のみを返却します
+    render json: { task: winning_task }
   end
 end

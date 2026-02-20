@@ -30,14 +30,11 @@ export default class extends Controller {
       ctx.arc(200, 200, 180, 0, Math.PI * 2);
       ctx.fillStyle = "#eeeeee";
       ctx.fill();
-      ctx.fillStyle = "#999999";
-      ctx.font = "20px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("タスクがありません", 200, 205);
       return;
     }
 
     const totalWeight = tasks.reduce((sum, t) => sum + (Number(t.weight) || 1), 0);
+    // 開始位置を真上（-90度）に設定
     let currentAngle = -Math.PI / 2;
 
     tasks.forEach((task, i) => {
@@ -74,6 +71,7 @@ export default class extends Controller {
     this.resultTarget.classList.add("hidden");
 
     try {
+      // 1. サーバーから厳正な抽選結果を取得
       const response = await fetch("/roulette/spin", {
         method: "POST",
         headers: { 
@@ -83,26 +81,39 @@ export default class extends Controller {
         }
       });
       const data = await response.json();
-      this.selectedTaskId = data.task.id;
+      const winnerId = data.task.id;
+      this.selectedTaskId = winnerId;
 
+      // 2. 当選タスクの位置を計算
       const tasks = this.tasksValue;
       const totalWeight = tasks.reduce((sum, t) => sum + (Number(t.weight) || 1), 0);
       let accumulatedWeight = 0;
-      let targetIndex = tasks.findIndex(t => t.id === data.task.id);
+      let targetIndex = tasks.findIndex(t => t.id === winnerId);
       
       for (let i = 0; i < targetIndex; i++) {
         accumulatedWeight += (Number(tasks[i].weight) || 1);
       }
       
       const targetWeight = (Number(tasks[targetIndex].weight) || 1);
+      
+      // 当選エリアの中心が真上（針）に来るための角度を算出
+      // (累積重み + 当選重みの半分) / 合計重み * 360度
       const centerPosInDegrees = (accumulatedWeight + targetWeight / 2) / totalWeight * 360;
+      
+      // 反時計回りに回転させるため 360 - 中心位置
       const rotationToTarget = 360 - centerPosInDegrees;
-      this.currentRotation += (1800 + rotationToTarget + (360 - (this.currentRotation % 360)));
+      
+      // 3. 回転アニメーションの適用
+      // 1800度（5回転） + ターゲットまでの角度 + 前回の回転の端数をリセット
+      const resetRotation = 360 - (this.currentRotation % 360);
+      this.currentRotation += (1800 + rotationToTarget + resetRotation);
 
       this.canvasTarget.style.transform = `rotate(${this.currentRotation}deg)`;
 
+      // 4. 停止後の演出
       setTimeout(() => {
-        document.getElementById("winnerName").textContent = data.task.title;
+        const winnerNameElement = document.getElementById("winnerName");
+        if (winnerNameElement) winnerNameElement.textContent = data.task.title;
         this.resultTarget.classList.remove("hidden");
         this.buttonTarget.disabled = false;
       }, 5000);
@@ -112,9 +123,9 @@ export default class extends Controller {
     }
   }
 
+  // ... complete() と csrfToken() はそのまま ...
   async complete() {
     if (!this.selectedTaskId) return;
-
     try {
       const response = await fetch(`/tasks/${this.selectedTaskId}`, {
         method: "PATCH",
@@ -124,11 +135,8 @@ export default class extends Controller {
           "X-Requested-With": "XMLHttpRequest",
           "Accept": "text/html"
         },
-        // Rails側で判定しやすいよう文字列で送る
         body: JSON.stringify({ task: { completed: "true" } })
       });
-
-      // サーバーからのリダイレクト指示に従う
       if (response.redirected) {
         window.location.href = response.url;
       } else if (response.url) {
