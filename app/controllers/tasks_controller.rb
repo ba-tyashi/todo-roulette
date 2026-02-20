@@ -26,13 +26,18 @@ class TasksController < ApplicationController
     if params[:task] && params[:task][:completed].to_s == "true"
       @task.destroy
       
-      # ご褒美を抽選
-      @reward = current_user.rewards.sample || Reward.new(name: "深呼吸してリラックス")
+      # 1. ユーザーのご褒美から抽選
+      @reward = current_user.rewards.sample
       
-      # 303 status (see_other) を指定してJS側のリダイレクトを助ける
-      redirect_to reward_path(@reward), status: :see_other
+      if @reward.present?
+        # データがあれば、そのご褒美の詳細画面へ
+        redirect_to reward_path(@reward), status: :see_other
+      else
+        # データがない場合は、エラーにせずトップへ戻る（またはメッセージを出す）
+        redirect_to root_path, notice: "お疲れ様！ご褒美を登録するとここに表示されますよ。", status: :see_other
+      end
     else
-      # 通常の編集処理
+      # 通常の編集処理（ここは変更なし）
       if @task.update(task_params)
         redirect_to root_path, notice: "タスクを更新しました"
       else
