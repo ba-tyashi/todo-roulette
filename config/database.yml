@@ -1,23 +1,22 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  # 環境変数 DATABASE_HOST があればそれを使い、なければ 'db' を使う
+  host: <%= ENV.fetch("DATABASE_HOST") { "db" } %>
+  user: postgres
+  # 環境変数 DATABASE_PASSWORD があればそれを使い、なければ 'password' を使う
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "password" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: postgres
-  password: password
 
 development:
   <<: *default
   database: todo_roulette_development
-  # WSLからDockerのDBに繋ぐために localhost を指定
-  host: db
 
 test:
   <<: *default
   database: todo_roulette_test
-  host: db
 
 production:
   <<: *default
-  # Render本番環境では DATABASE_URL 環境変数から自動接続されるため
-  # 個別のDB名やパスワードの指定は不要です
+  # 本番（Render）用
   url: <%= ENV['DATABASE_URL'] %>
