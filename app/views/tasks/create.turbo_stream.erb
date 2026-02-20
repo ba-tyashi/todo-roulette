@@ -1,5 +1,13 @@
+<%# 1. 一覧（#tasks）の先頭に新しいタスクを追加する %>
 <%= turbo_stream.prepend "tasks", partial: "tasks/task", locals: { task: @task } %>
+
+<%# 2. フォーム（#new_task_form）の中身をリセットして空にする %>
 <%= turbo_stream.replace "new_task_form" do %>
-  <%= render "form", task: Task.new %>
+  <div id="new_task_form" class="bg-white shadow-md rounded-lg p-6 mb-10 border border-gray-100">
+    <h2 class="text-lg font-semibold mb-4 text-gray-700">新しいタスクを追加</h2>
+    <%= render "form", task: current_user.tasks.build %>
+  </div>
 <% end %>
+
+<%# 3. 「タスクがありません」メッセージを消す %>
 <%= turbo_stream.remove "no_tasks_message" %>

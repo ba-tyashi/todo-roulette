@@ -1,7 +1,7 @@
 <div class="max-w-4xl mx-auto p-8">
   <h1 class="text-3xl font-bold mb-8 text-gray-800">ルーレット用タスク管理</h1>
 
-  <%# ID "new_task_form" を付与して、Turboから中身を空にできるようにする %>
+  <%# 新規作成フォーム %>
   <div id="new_task_form" class="bg-white shadow-md rounded-lg p-6 mb-10 border border-gray-100">
     <h2 class="text-lg font-semibold mb-4 text-gray-700">新しいタスクを追加</h2>
     <%= render "form", task: @task %>
@@ -11,12 +11,13 @@
     <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
       <h2 class="font-semibold text-gray-600">あなたのタスク</h2>
     </div>
-    
-    <%# リスト本体に id="tasks" を持たせる %>
+
+    <%# ここが追加・削除のターゲットになります %>
     <div id="tasks" class="divide-y divide-gray-100">
       <%= render @tasks %>
     </div>
-    
+
+    <%# タスクがない時のメッセージ %>
     <div id="no_tasks_message">
       <% if @tasks.none? %>
         <p class="p-10 text-center text-gray-400">タスクがありません。上のフォームから追加しましょう！</p>
@@ -24,5 +25,10 @@
     </div>
   </div>
 
-  <div id="treasure_modal"></div>
+  <div class="mt-6 flex justify-center">
+    <%= link_to roulette_path, data: { turbo: false }, class: "flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition duration-200" do %>
+      <span class="text-xl">🎡</span>
+      <span>ルーレットを作成する</span>
+    <% end %>
+  </div>
 </div>

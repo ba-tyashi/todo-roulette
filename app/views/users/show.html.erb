@@ -1,35 +1,58 @@
-<div style="max-width: 600px; margin: 0 auto; font-family: sans-serif;">
-  <h1>マイページ</h1>
-
-  <div style="background-color: #f0f8ff; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #b0d4ff;">
-    <h2 style="margin-top: 0;">こんにちは、<%= @user.name %> さん！</h2>
-    <p style="color: #555;">現在ログイン中です。あなたの相棒を確認しましょう。</p>
+<div style="max-width: 800px; margin: 0 auto; font-family: sans-serif; padding: 20px;">
+  
+  <%# ヘッダーエリア %>
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 2px solid #f0f4f8; padding-bottom: 10px;">
+    <h1 style="margin: 0; font-size: 1.5rem; color: #333;">マイページ</h1>
+    
+    <%# 修正ポイント：link_to をカッコ () で囲みました %>
+    <%= link_to(rewards_path, 
+          style: "display: flex; align-items: center; gap: 5px; background-color: #fff9e6; color: #d97706; padding: 8px 16px; border: 1px solid #fde68a; text-decoration: none; font-size: 0.9rem; font-weight: bold; border-radius: 8px; transition: 0.2s;", 
+          onmouseover: "this.style.backgroundColor='#fef3c7'", 
+          onmouseout: "this.style.backgroundColor='#fff9e6'") do %>
+      <span>⚙️</span>
+      <span>ご褒美を設定する</span>
+    <% end %>
   </div>
 
-  <h3>所持しているキャラクター</h3>
+  <%# ユーザー情報カード %>
+  <div style="background-color: #f0f8ff; padding: 25px; border-radius: 15px; margin-bottom: 30px; border: 1px solid #b0d4ff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <h2 style="margin-top: 0; color: #1e40af;">こんにちは、<%= current_user.name %> さん！</h2>
+    <p style="color: #475569; margin-bottom: 0;">現在ログイン中です。あなたの相棒を確認しましょう。</p>
+  </div>
+
+  <h3 style="color: #334155; margin-bottom: 20px;">🐣 所持しているキャラクター</h3>
+  
   <div style="display: flex; gap: 20px; flex-wrap: wrap;">
     <% if @character_instances.any? %>
       <% @character_instances.each do |instance| %>
-        <div style="border: 2px solid #ddd; padding: 20px; border-radius: 12px; text-align: center; width: 220px; background-color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-          <div style="font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #333;">
+        <div style="border: 2px solid #e2e8f0; padding: 20px; border-radius: 16px; text-align: center; width: 220px; background-color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div style="font-size: 1.1em; font-weight: bold; margin-bottom: 15px; color: #1e293b;">
             <%= instance.character.name %>
           </div>
           
-          <div style="width: 120px; height: 120px; background-color: #fff9e6; line-height: 120px; margin: 0 auto; border-radius: 50%; font-size: 60px; border: 2px dashed #ffd700;">
+          <div style="width: 110px; height: 110px; background-color: #f8fafc; line-height: 110px; margin: 0 auto; border-radius: 50%; font-size: 50px; border: 3px solid #f1f5f9; display: flex; align-items: center; justify-content: center;">
             🥚
           </div>
           
-          <p style="font-size: 0.9em; color: #666; margin-top: 15px; line-height: 1.4;">
+          <p style="font-size: 0.85em; color: #64748b; margin-top: 20px; line-height: 1.6;">
             <%= instance.character.description %>
           </p>
         </div>
       <% end %>
     <% else %>
-      <p>まだキャラクターを持っていません。</p>
+      <div style="width: 100%; padding: 40px; text-align: center; border: 2px dashed #cbd5e1; border-radius: 12px; color: #94a3b8;">
+        まだキャラクターを持っていません。
+      </div>
     <% end %>
   </div>
 
-  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
-    <%= link_to "🏠 TODO一覧（ルーレット）へ", tasks_path, style: "text-decoration: none; color: #007bff; font-weight: bold;" %>
+  <div style="margin-top: 50px; text-align: center;">
+    <%# 修正ポイント：こちらもカッコ () で囲んで安全にしています %>
+    <%= link_to(tasks_path, 
+          style: "display: inline-block; text-decoration: none; color: #2563eb; font-weight: bold; padding: 10px 20px; border-radius: 30px; border: 2px solid #dbeafe; transition: 0.2s;", 
+          onmouseover: "this.style.backgroundColor='#eff6ff'", 
+          onmouseout: "this.style.backgroundColor='transparent'") do %>
+      🏠 TODO一覧に戻る
+    <% end %>
   </div>
 </div>

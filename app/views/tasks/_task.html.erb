@@ -1,39 +1,35 @@
-<%= turbo_frame_tag dom_id(task) do %>
-  <%# 完了時は少し薄くするが、編集中(action_name == 'edit')はハッキリ表示させる %>
-  <div class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition <%= 'opacity-50' if task.completed && action_name != 'edit' %>">
-    <div class="flex items-center space-x-4">
-      
-      <%# 完了・未完了を切り替えるボタン %>
-      <%= form_with(model: task, class: "flex items-center") do |f| %>
-        <%= f.hidden_field :completed, value: !task.completed %>
-        <%= f.submit task.completed ? "戻す" : "完了", 
-            class: "px-3 py-1 text-xs font-bold rounded-full border cursor-pointer transition #{task.completed ? 'bg-gray-100 text-gray-500' : 'bg-green-50 text-green-600 border-green-200 hover:bg-green-100'}" %>
-      <% end %>
-
-      <%# 優先度の星表示 %>
-      <span class="text-lg font-bold text-yellow-500 min-w-[60px]">
-        <%= case task.priority when 'high' then '★★★' when 'medium' then '★★' else '★' end %>
-      </span>
-      
-      <%# タスク名（取り消し線 line-through を削除しました） %>
-      <div>
-        <div class="font-medium text-gray-900"><%= task.title %></div>
+<%# 削除時に Turbo がこの ID を探して消去します %>
+<div id="<%= dom_id(task) %>" class="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition border-b border-gray-100">
+  <div class="flex items-center space-x-4">
+    
+    <%# 優先度の星表示 %>
+    <span class="text-lg font-bold text-yellow-500 min-w-[60px]">
+      <%= case task.priority 
+          when 'high' then '★★★' 
+          when 'medium' then '★★' 
+          else '★' 
+          end %>
+    </span>
+    
+    <div>
+      <div class="font-medium text-gray-900"><%= task.title %></div>
+      <% if task.try(:category).present? %>
         <div class="text-xs">
           <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
             <%= task.category.name %>
           </span>
         </div>
-      </div>
-    </div>
-
-    <div class="flex items-center space-x-4">
-      <%# 編集ボタン %>
-      <%= link_to "編集", edit_task_path(task), class: "text-blue-500 hover:text-blue-700 text-sm font-medium" %>
-      
-      <%# 削除ボタン %>
-      <%= button_to "削除", task_path(task), method: :delete, 
-          data: { turbo_confirm: "本当に削除しますか？" },
-          class: "text-red-400 hover:text-red-600 text-sm font-medium" %>
+      <% end %>
     </div>
   </div>
-<% end %>
+
+  <div class="flex items-center space-x-4">
+    <%= link_to "編集", edit_task_path(task), class: "text-blue-500 text-sm hover:underline" %>
+    
+    <%# 削除ボタン。dom_id と turbo_stream の組み合わせで Content missing を防ぎます %>
+    <%= button_to "削除", task_path(task), 
+                  method: :delete, 
+                  data: { turbo_confirm: "本当に削除しますか？" }, 
+                  class: "text-red-400 text-sm hover:text-red-600 cursor-pointer" %>
+  </div>
+</div>

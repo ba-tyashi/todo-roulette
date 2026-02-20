@@ -1,0 +1,61 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4" 
+     data-controller="roulette"
+     data-roulette-tasks-value="<%= @tasks.to_json %>">
+
+  <h1 class="text-4xl font-black mb-12 text-gray-800 tracking-widest">TODOルーレット</h1>
+
+  <% if @tasks.any? %>
+    <%# --- 未完了タスクがある場合：ルーレットを表示 --- %>
+    <div class="relative w-[320px] h-[320px] md:w-[400px] md:h-[400px]">
+      <%# 針 %>
+      <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+        <div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-red-600 drop-shadow-md"></div>
+      </div>
+
+      <%# 円盤本体 %>
+      <canvas data-roulette-target="canvas" 
+              width="400" height="400" 
+              style="width: 100%; height: 100%; transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);"
+              class="rounded-full shadow-2xl bg-white">
+      </canvas>
+    </div>
+
+    <%# スタートボタン %>
+    <div class="mt-12">
+      <button data-action="click->roulette#spin" 
+              data-roulette-target="button"
+              class="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-4 px-12 rounded-full shadow-lg transform active:scale-95 transition-all">
+        スタート！
+      </button>
+    </div>
+    
+    <%# 結果表示エリア（ルーレット停止後に表示） %>
+    <div data-roulette-target="result" class="mt-8 hidden text-center">
+      <div class="animate-bounce">
+        <p class="text-gray-500 text-sm mb-1">今回のタスクは</p>
+        <p id="winnerName" class="text-3xl font-black text-blue-600 mb-6"></p>
+      </div>
+
+      <button data-action="click->roulette#complete" 
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg cursor-pointer transform active:scale-95 transition-all">
+        完了して次へ！
+      </button>
+    </div>
+
+  <% else %>
+    <%# --- タスクが0個の場合：完了メッセージを表示 --- %>
+    <div class="text-center bg-white p-12 rounded-3xl shadow-xl border-2 border-dashed border-blue-100">
+      <div class="text-7xl mb-6">🎉</div>
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">ALL CLEAR!</h2>
+      <p class="text-gray-500 mb-8">やるべきタスクは全てなくなりました。</p>
+      
+      <div class="flex flex-col gap-4">
+        <%= link_to "新しいタスクを登録する", root_path, 
+            class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-md transition-all text-center" %>
+        
+        <%= link_to "マイページへ戻る", "/mypage", 
+            class: "text-blue-600 hover:underline font-medium" %>
+      </div>
+    </div>
+  <% end %>
+</div>

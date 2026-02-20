@@ -1,20 +1,23 @@
 Rails.application.routes.draw do
-  get "rewards/index"
-  resources :tasks
-  resources :rewards, only: [:index, :create, :destroy]
   devise_for :users
   root "tasks#index"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  resources :tasks
+  
+  # show を追加して、個別のご褒美画面を表示できるようにします
+  resources :rewards, only: [:index, :show, :create, :destroy]
 
-  # Render dynamic PWA files from app/views/pwa/*
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  # マイページ
   get 'mypage', to: 'users#show', as: :user_mypage
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # ルーレット関連
+  # resources ではなく resource (単数系) を使っている現在の設定を維持します
+  resource :roulette, only: [:show], controller: 'roulettes' do
+    post :spin, on: :collection
+  end
+
+  # Rails標準の設定
+  get "up" => "rails/health#show", as: :rails_health_check
+  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 end
