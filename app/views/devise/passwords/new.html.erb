@@ -5,7 +5,8 @@
   <p>恐れ入りますが、パスワードの再発行をご希望の方は、下記のボタンより管理者まで直接メールにてご連絡ください。</p>
   
   <div class="actions" style="margin-top: 20px;">
-    <%= mail_to "あなたのメールアドレス@gmail.com", 
+    <%# 宛先を baatyashi1116@gmail.com に設定しました %>
+    <%= mail_to "baatyashi1116@gmail.com", 
                 "管理者に問い合わせる", 
                 subject: "【TODOルーレット】パスワード再設定の依頼",
                 body: "--- 以下の内容をご記入ください ---\n登録済みのメールアドレス：\nお名前：\n\n上記アカウントのパスワード再発行をお願いします。",

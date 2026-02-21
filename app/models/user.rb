@@ -6,6 +6,9 @@ class User < ApplicationRecord
 
   # バリデーション
   validates :name, presence: true
+  
+  # ★ここを追加：セキュリティ対策（ユーザー列挙の防止）のため、重複メッセージを抽象化
+  validates :email, uniqueness: { message: "は使用できません。" }
 
   # 関連付け（ユーザー削除時にこれらも自動削除されます）
   has_many :tasks, dependent: :destroy
