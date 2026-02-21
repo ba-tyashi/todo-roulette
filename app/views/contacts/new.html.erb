@@ -1,39 +1,44 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-5">
+    <%# ログイン画面と同じくらいの横幅に制限 %>
+    <div class="col-md-5 col-lg-4">
       
-      <%# ログイン画面のようなカード形式のデザイン %>
-      <div class="card shadow-sm p-4" style="border-radius: 10px; border: 1px solid #f0f0f0;">
-        <div class="card-body">
-          <h2 class="text-center mb-4" style="font-weight: bold; color: #333;">管理者への問い合わせ</h2>
+      <%# 白いカードデザイン %>
+      <div class="card shadow-sm p-4" style="border-radius: 12px; border: 1px solid #e0e0e0; background-color: #ffffff;">
+        <div class="card-body p-2">
+          <h2 class="text-center mb-4" style="font-size: 1.4rem; font-weight: bold; color: #333;">管理者への問い合わせ</h2>
           
           <p class="text-muted small mb-4 text-center">
-            パスワードの再発行をご希望の方は、<br>メールアドレスを入力して送信してください。
+            登録時のメールアドレスを入力して<br>送信ボタンを押してください。
           </p>
 
           <%= form_with model: @contact, local: true do |f| %>
             
-            <%# メールアドレス欄：ラベルと入力欄を縦に揃える %>
-            <div class="mb-3 text-start">
-              <%= f.label :email, "メールアドレス", class: "form-label fw-bold small" %>
-              <%= f.email_field :email, class: "form-control", required: true, style: "border: 1.5px solid #333; border-radius: 8px; padding: 10px;" %>
+            <%# メールアドレス入力欄 %>
+            <div class="mb-3">
+              <%= f.label :email, "メールアドレス", class: "form-label fw-bold small mb-1" %>
+              <%= f.email_field :email, class: "form-control", required: true, 
+                                style: "border: 1.5px solid #333; border-radius: 6px; padding: 10px; height: 45px;" %>
             </div>
             
-            <%# お問い合わせ内容欄：ここも縦に揃えます %>
-            <div class="mb-4 text-start">
-              <%= f.label :content, "お問い合わせ内容", class: "form-label fw-bold small" %>
-              <%= f.text_area :content, class: "form-control", rows: 3, value: "パスワードの再発行をお願いします。", style: "border: 1.5px solid #ddd; border-radius: 8px; background-color: #f0f4ff;" %>
+            <%# 問い合わせ内容欄：高さを抑えて「細長く」見えるように調整 %>
+            <div class="mb-4">
+              <%= f.label :content, "お問い合わせ内容", class: "form-label fw-bold small mb-1" %>
+              <%= f.text_field :content, class: "form-control", value: "パスワードの再発行をお願いします。", 
+                               style: "border: 1.5px solid #333; border-radius: 6px; padding: 10px; height: 45px; background-color: #f8faff;" %>
             </div>
 
-            <%# 送信ボタン：青色に変更 %>
+            <%# 送信ボタン：青地に白文字 %>
             <div class="d-grid gap-2">
-              <%= f.submit "送信する", class: "btn btn-primary fw-bold", style: "background-color: #1a73e8; border: none; padding: 12px; border-radius: 8px;" %>
+              <%= f.submit "送信する", class: "btn fw-bold", 
+                           style: "background-color: #1a73e8; color: #ffffff; border: none; padding: 12px; border-radius: 6px; font-size: 1rem;" %>
             </div>
 
           <% end %>
 
-          <div class="text-center mt-4 pt-2" style="border-top: 1px solid #eee;">
-            <%= link_to "ログイン画面に戻る", new_user_session_path, class: "text-decoration-none small", style: "color: #1a73e8; font-weight: bold;" %>
+          <div class="text-center mt-4 pt-3" style="border-top: 1px solid #eee;">
+            <%= link_to "ログイン画面に戻る", new_user_session_path, 
+                        class: "text-decoration-none small fw-bold", style: "color: #1a73e8;" %>
           </div>
         </div>
       </div>
