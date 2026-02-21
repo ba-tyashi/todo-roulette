@@ -1,16 +1,19 @@
-<h2>Forgot your password?</h2>
+<h2>パスワードをお忘れですか？</h2>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+<div class="password-reset-guide" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+  <p>現在、システムによる自動パスワード再設定機能を調整中です。</p>
+  <p>恐れ入りますが、パスワードの再発行をご希望の方は、下記のボタンより管理者まで直接メールにてご連絡ください。</p>
+  
+  <div class="actions" style="margin-top: 20px;">
+    <%= mail_to "あなたのメールアドレス@gmail.com", 
+                "管理者に問い合わせる", 
+                subject: "【TODOルーレット】パスワード再設定の依頼",
+                body: "--- 以下の内容をご記入ください ---\n登録済みのメールアドレス：\nお名前：\n\n上記アカウントのパスワード再発行をお願いします。",
+                class: "btn", 
+                style: "background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;" %>
   </div>
+</div>
 
-  <div class="actions">
-    <%= f.submit "Send me password reset instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+<div style="margin-top: 20px;">
+  <%= render "devise/shared/links" %>
+</div>
