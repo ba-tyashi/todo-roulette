@@ -32,7 +32,7 @@ ja:
         user:
           attributes:
             email:
-              taken: "はすでに登録されています"
+              taken: "こちらのメールアドレスは使用できません。"
               blank: "を入力してください"
             password:
               blank: "を入力してください"
