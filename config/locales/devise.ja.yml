@@ -2,7 +2,7 @@ ja:
   # Devise専用のメッセージ
   devise:
     failure:
-      unauthenticated: "この操作には、ログインまたは新規登録が必要です。"
+      unauthenticated: ""
       invalid: "メールアドレスまたはパスワードが違います。"
       last_attempt: "パスワードを間違えています。あと1回でアカウントがロックされます。"
       not_found_in_database: "メールアドレスまたはパスワードが違います。"
