@@ -1,0 +1,12 @@
+<h2>管理者への問い合わせ</h2>
+<%= form_with model: @contact, local: true do |f| %>
+  <div style="margin-bottom: 15px;">
+    <%= f.label :email, "登録済みのメールアドレス" %><br>
+    <%= f.email_field :email, required: true, style: "width: 100%; max-width: 400px;" %>
+  </div>
+  <div style="margin-bottom: 15px;">
+    <%= f.label :content, "お問い合わせ内容" %><br>
+    <%= f.text_area :content, value: "パスワードの再発行をお願いします。", required: true, style: "width: 100%; max-width: 400px; height: 100px;" %>
+  </div>
+  <%= f.submit "送信する", style: "background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" %>
+<% end %>

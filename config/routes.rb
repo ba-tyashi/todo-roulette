@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "contacts/new"
+  get "contacts/create"
   devise_for :users
   root "tasks#index"
 
@@ -6,7 +8,7 @@ Rails.application.routes.draw do
   
   # show を追加して、個別のご褒美画面を表示できるようにします
   resources :rewards, only: [:index, :show, :create, :destroy]
-
+  resources :contacts, only: [:new, :create]
   # マイページ
   get 'mypage', to: 'users#show', as: :user_mypage
 
