@@ -2,14 +2,11 @@
 
 <div class="password-reset-guide" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
   <p>現在、システムによる自動パスワード再設定機能を調整中です。</p>
-  <p>恐れ入りますが、パスワードの再発行をご希望の方は、下記のボタンより管理者まで直接メールにてご連絡ください。</p>
+  <p>恐れ入りますが、パスワードの再発行をご希望の方は、下記のボタンより問い合わせフォームへお進みください。</p>
   
   <div class="actions" style="margin-top: 20px;">
-    <%# 宛先を baatyashi1116@gmail.com に設定しました %>
-    <%= mail_to "baatyashi1116@gmail.com", 
-                "管理者に問い合わせる", 
-                subject: "【TODOルーレット】パスワード再設定の依頼",
-                body: "--- 以下の内容をご記入ください ---\n登録済みのメールアドレス：\nお名前：\n\n上記アカウントのパスワード再発行をお願いします。",
+    <%# 不要なオプションを削除し、問い合わせページ(new_contact_path)へのリンクのみにしました %>
+    <%= link_to "管理者に問い合わせる", new_contact_path, 
                 class: "btn", 
                 style: "background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;" %>
   </div>
