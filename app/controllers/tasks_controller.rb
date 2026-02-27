@@ -22,22 +22,43 @@ class TasksController < ApplicationController
   end
 
   def update
-    # JavaScriptから completed: "true" が送られてきたら物理削除する
+    # JavaScript側のチェックボックス操作などにより completed: "true" が送られてきた場合
     if params[:task] && params[:task][:completed].to_s == "true"
+      
+      # 1. 削除前にカテゴリーIDを一時保存（進化先の判定に使用）
+      last_category_id = @task.category_id
+
+      # 2. キャラクターの経験値加算と進化（変身）ロジック
+      char_inst = current_user.current_character
+      evolved = false
+
+      if char_inst
+        # 重みに関わらず 1 加算（5回完了で 5 経験値にするため）
+        char_inst.increment!(:experience, 1)
+        
+        # Userモデルの進化チェックを呼び出し（内部で reload を行う修正版）
+        evolved = current_user.evolution_check!(last_category_id)
+      end
+
+      # 3. タスクをデータベースから削除
       @task.destroy
       
-      # 1. ユーザーのご褒美から抽選
+      # 4. ご褒美データの抽選
       @reward = current_user.rewards.sample
       
       if @reward.present?
-        # データがあれば、そのご褒美の詳細画面へ
-        redirect_to reward_path(@reward), status: :see_other
+        # evolved が true なら姿が変わった旨を通知
+        notice_msg = evolved ? "✨ キャラクターの姿が変わった！ ✨" : "タスク完了！経験値を獲得しました。"
+        # ご褒美詳細画面へリダイレクト。evolved パラメータを渡し、画面演出に使用可能にする
+        redirect_to reward_path(@reward, evolved: evolved), notice: notice_msg, status: :see_other
       else
-        # データがない場合は、エラーにせずトップへ戻る（またはメッセージを出す）
-        redirect_to root_path, notice: "お疲れ様！ご褒美を登録するとここに表示されますよ。", status: :see_other
+        # ご褒美が登録されていない場合のフォールバック
+        msg = evolved ? "キャラクターが新しい姿になりました！" : "お疲れ様！次はご褒美を登録してみましょう。"
+        redirect_to root_path, notice: msg, status: :see_other
       end
+
     else
-      # 通常の編集処理（ここは変更なし）
+      # タイトル編集など、完了以外の通常の更新処理
       if @task.update(task_params)
         redirect_to root_path, notice: "タスクを更新しました"
       else
@@ -63,6 +84,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
+    # ストロングパラメータ
     params.require(:task).permit(:title, :completed, :priority, :category_id, :weight, :color)
   end
 end
