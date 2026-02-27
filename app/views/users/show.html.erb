@@ -29,9 +29,17 @@
             <%= instance.character.name %>
           </div>
           
-          <div style="width: 110px; height: 110px; background-color: #f8fafc; line-height: 110px; margin: 0 auto; border-radius: 50%; font-size: 50px; border: 3px solid #f1f5f9; display: flex; align-items: center; justify-content: center;">
-            🥚
+          <%# --- 修正ポイント：画像表示エリア --- %>
+          <div style="width: 110px; height: 110px; background-color: #f8fafc; margin: 0 auto; border-radius: 50%; border: 3px solid #f1f5f9; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <% if instance.character.image_url.present? %>
+              <%# データベースに登録された画像を表示 %>
+              <%= image_tag instance.character.image_url, style: "width: 100%; height: 100%; object-fit: contain;" %>
+            <% else %>
+              <%# 画像がない場合のフォールバック %>
+              <span style="font-size: 50px;">🥚</span>
+            <% end %>
           </div>
+          <%# ---------------------------------- %>
           
           <p style="font-size: 0.85em; color: #64748b; margin-top: 20px; line-height: 1.6;">
             <%= instance.character.description %>
@@ -54,7 +62,7 @@
     <% end %>
   </div>
 
-  <%# --- ここから追加：アカウント削除セクション --- %>
+  <%# --- アカウント削除セクション --- %>
   <div style="margin-top: 80px; padding: 25px; border-radius: 15px; border: 1px solid #fee2e2; background-color: #fffafb;">
     <h3 style="margin-top: 0; color: #b91c1c; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
       ⚠️ 危険な操作
